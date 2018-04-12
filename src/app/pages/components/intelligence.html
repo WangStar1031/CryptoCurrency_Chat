@@ -1,0 +1,163 @@
+<link href="./assets/js/jquery-ui/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" media="screen"/>
+<link href="./assets/css/Intelligence.css?<?= time(); ?>" rel="stylesheet" type="text/css"/>
+<link href="./assets/js/timepicker/css/bootstrap-timepicker.css" rel="stylesheet" type="text/css" media="screen"/>
+<script src="./assets/js/datepicker/js/datepicker.js" type="text/javascript"></script>
+<script src="./assets/js/timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<style type="text/css">
+	span.ng-binding.ng-scope{
+		color: black!important;
+	}
+	.links line {
+		stroke: #ccc;
+		stroke-width: 1;
+		stroke-opacity: 0.8;
+	}
+
+	.nodes circle {
+		stroke: #fff;
+		stroke-width: 1.5px;
+	}
+	.links line{
+		stroke-width : 2px;
+	}
+	.activeLink, .activeCircle{
+		stroke: red!important;
+		/*stroke-width : 3px;*/
+	}
+</style>
+<div ba-panel>
+	<form name="search" id="search" action="" method="post" novalidate>
+		<div class="col-xs-12" ng-controller="IntelligenceCtrl">
+			<div class="row box">	
+				<div class="content-body col-xs-9 customCol">
+					<div class="col-xs-2 customCol">
+						<div class="form-group">
+							<label class="form-label">ScreenName</label>
+							<div class="controls">
+								<ui-select ng-model="screenNames.selected" class="btn-group bootstrap-select form-control mainScreenName" ng-disabled="false" append-to-body="true" search-enabled="true">
+									<ui-select-match placeholder="Select With Search">
+										{{$select.selected.screenName}}
+									</ui-select-match>
+									<ui-select-choices
+										repeat="screenNames in arrScreenNames | filter: $select.search" >
+										<span ng-bind-html="screenNames.screenName" style="color: black;"></span>
+									</ui-select-choices>
+								</ui-select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-10 customCol">
+						<div class="col-xs-8 customCol">
+							<div class="col-xs-2 customCol">
+								<div class="form-group">
+									<label class="form-label">Levels</label>
+									<div class="controls">
+										<input type="text" name="Levels" id="Levels" class="form-control" ng-model="nMasterLevel">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xs-3 customCol">
+								<div class="form-group">
+									<label class="form-label">StartDate:</label>
+									<div class="controls">
+										<input type="text" name="schedulaStart" id="schedulaStart" class="form-control datepicker" placeholder="Choose your favorite date" value="" ng-model="startDate">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xs-2 customCol">
+								<div class="form-group">
+									<label class="form-label">StartTime:</label>
+									<div class="controls">
+										<input type="text" name="oraStart" id="oraStart" class="form-control timepicker" data-template="dropdown" data-show-seconds="true" data-show-meridian="false" data-minute-step="5" data-default-time="00:00 AM" value="00:00 AM">
+									</div>
+								</div>
+							</div>
+
+
+							<div class="col-xs-3 customCol">
+								<div class="form-group">
+									<label class="form-label">EndDate:</label>
+									<div class="controls">
+										<input type="text" name="schedulaEnd" id="schedulaEnd" class="form-control datepicker" placeholder="Choose your favorite date" value="" ng-model="endDate">
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xs-2 customCol">
+								<div class="form-group">
+									<label class="form-label">EndTime:</label>
+									<div class="controls">
+										<input type="text" name="oraEnd" id="oraEnd" class="form-control timepicker" data-template="dropdown" data-show-seconds="true" data-show-meridian="false" data-minute-step="5" data-default-time="24:59 PM" value="24:59 PM">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-4 customCol">
+							<div class="col-xs-6 customCol">
+								<br/>
+								<button type="button" name="action" value="search" id="submit" class="btn btn-success btn-block" ng-click="onSearch()"><i class="fa fa-check"></i>Search</button>
+							</div>
+							<div class="col-xs-6 customCol">
+								<br/>
+								<button type="button" id="reset" class="btn btn-block"><i class="fa fa-times"></i> Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="content-body col-lg-3 col-md-12 col-sm-12 col-xs-12 ShowOption">
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<div class="form-group">
+							<label class="form-label">Levels</label>
+							<div class="controls">
+								<input type="text" name="ExtLevels" id="ExtLevels" class="form-control" ng-model="nLevel">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<div class="form-group">
+							<label class="form-label">Conversations</label>
+							<div class="controls">
+								<input type="text" name="ExtConvs" id="ExtConvs" class="form-control" ng-model="nRelations">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+						<br/>
+						<button type="button" name="action" value="search" id="Show" class="btn btn-success btn-block" ng-click="onApply()"><i class="fa fa-check"></i>Apply</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row"></div>
+	</form>
+
+	<!-- Intelligence -->
+<script src="./assets/js/Intelligence.js" type="text/javascript"></script>
+
+</div>
+<div class="ChartArea" ba-panel style="text-align: center;">
+	<svg class="intelligenceChart" id="intelligenceChart"></svg>
+	<!-- <div id="nodeChart"></div> -->
+</div>
+<div id="LineDetails" class="HideItem">
+	<table>
+		<tr>
+			<td>From:</td>
+			<td id="fromName"></td>
+		</tr>
+		<tr>
+			<td>To:</td>
+			<td id="toName"></td>
+		</tr>
+		<tr>
+			<td>Count:</td>
+			<td id="linkCount"></td>
+		</tr>
+	</table>
+</div>
+<div class="waiting HideItem" style="width: 100%; position: absolute;text-align: center;top:185px;">
+	<img src="./assets/img/giphy.gif">
+</div>

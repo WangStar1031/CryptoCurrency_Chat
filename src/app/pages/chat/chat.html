@@ -1,0 +1,83 @@
+<style type="text/css">
+	.chat_left, .chat_right{
+		height: 100%;
+	}
+	.chat_title{
+		background-color: #ffd894; color: #555;
+	}
+	.active_chat{
+		background-color: #ffaa15 !important; color: white !important;box-shadow: 0 0 2px 3px #9c690b inset;
+	}
+	.chatList, .chatContents, .msgContents{
+		background-color: #ffffff55;border-radius: 5px; overflow: auto;
+	}
+	.msgContents{
+		border: 1px solid white;
+	}
+	#msgText{
+		resize: none; font-size: 1.2em; padding: 5px; color: black;
+	}
+	.active_contact{
+		background-color: #4a90c582; color: white!important;
+	}
+	.contact{
+		color: black; font-size: 1.3em;cursor: pointer; padding: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+	}
+	.contact img{
+		width: 50px; height: 50px; border-radius: 50%;margin-right: 20px;
+	}
+	.messageBox{
+		display: none;
+	}
+	.active_message{
+		display: block !important; padding: 10px;
+	}
+	.OneMsg{
+		padding: 5px; margin-bottom: 5px; border-radius: 5px;
+	}
+	.OneMsg img{
+		width: 30px; border-radius: 50%;
+	}
+	.OneMsg .msgOne{
+		background-color: #ffffffc2; padding: 10px; display: inline-block; margin-left: 10px; border-radius: 5px; vertical-align: top;
+	}
+	.OneMsg .msgOne div{
+		color: black; white-space: pre-line; word-wrap: break-word;
+	}
+	.MyMsg{
+		text-align: right;
+	}
+	.MyMsg .msgOne{
+		background-color: #d8f1fff0; text-align: left;
+	}
+</style>
+<div class="row" ng-controller="chatCtrl">
+	<div class="col-xs-3 chat_left" ba-panel ba-panel-class="with-scroll">
+		<div class="btn-group">
+			<button class="btn chat_title {{chat_type == 0 ? 'active_chat' : ''}}" ng-click="chatTypeChange(0)">{{panel1}}</button>
+			<button class="btn chat_title {{chat_type == 1 ? 'active_chat' : ''}}" ng-click="chatTypeChange(1)">{{panel2}}</button>
+		</div>
+		<div class="chatList row">
+			<div ng-repeat="contacts in contactList track by $index" ng-click='setContactIndex($index)' class="contact {{contactIndex == $index ? 'active_contact' : ''}}">
+				<img src='{{contacts.url}}'>{{contacts.name}}
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-9 chat_right" ba-panel ba-panel-class="with-scroll">
+		<div class="chatContents row">
+			<div ng-repeat="contacts in contactList track by $index">
+				<div class="messageBox {{contactIndex == $index ? 'active_message' : ''}}">
+					<div ng-repeat="msg in contacts.messages" class="OneMsg {{msg.name == '@me@' ? 'MyMsg' : ''}}">
+						<img src="{{contacts.url}}" ng-if="msg.name != '@me@'">
+						<div class="msgOne">
+							<div>{{msg.message}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="msgContents row">
+			<textarea id="msgText" class="col-xs-12" ng-model="msgTexts" enter-submit="submit()" placeholder="press Shift + Enter to send Message."></textarea>
+		</div>
+	</div>
+</div>

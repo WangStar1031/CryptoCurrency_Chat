@@ -1,0 +1,28 @@
+<style type="text/css">
+	.forumTable{
+		width: 100%;
+	}
+	.forumTable tr{
+		border: 1px solid white;
+	}
+	.forumTable td, .forumTable th{
+		padding: 10px; font-size: 1.3em;
+	}
+</style>
+<div ng-controller='forumCtrl'>
+	<table class="forumTable">
+		<tr>
+			<th>Poster</th>
+			<th>Title</th>
+			<th>Answers</th>
+			<th>Date</th>
+		</tr>
+		<tr ng-repeat='forum in ForumList'>
+			<td>{{forum.poster}}</td>
+			<td>{{forum.title}}</td>
+			<td>{{forum.Answers.length}}</td>
+			<td>{{forum.date}}</td>
+		</tr>
+	</table>
+</div>
+<ui-view></ui-view>
